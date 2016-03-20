@@ -1,0 +1,39 @@
+Coding Standard
+	* Use https://docs.unrealengine.com/latest/INT/Programming/Development/CodingStandard/index.html 
+
+	- Classes ment to be abstract or templates are prefixed by T.
+	- Classes used for storage/data are prefixed by D. (For Data)
+	- Screen classes are prefixed by S.
+	- Controller classes are prefixed by N.
+
+YOU Are a ninja! You must defeat your enemies and become friends with them so you can defeat more enemies and either remove their powers or make them go away.
+You can only kill nameless monsters because otherwise we'll get a T rating and that'll be bad.	
+
+Story Names:
+- NINJA : The main character, never talks, only responds via option selection.
+- SENSEI : The main character's sensei. Kinda a jerk but he's old so ehh.
+- ARCHER : He is NINJA's childhood friend who is angry at him for not telling him where he has been for the last ten years.
+- SAGE : An outcast from WALL CITY, he's just misunderstood trickster. He's sorta been drunkingly peeing in the town's water supply.
+
+@ Leaving NINJA VILLAGE:
+-- You start talking with your SENSEI about your NOBLE QUEST to fight and kill(?) GALGULON his brother who is an evil WIZARD.
+-- Start with the basic NINJA SCARF, can buy CAMP's and NINJA STAR (an equipment item that gives a massive bonus to attack, but costs a lot, probably be only be possible to buy after ARCHER)
+
+@ Meeting ARCHER:
+- You must fight ARCHER and regain his trust and friendship! He is pissed you left him for the NINJA VILLAGE and he has fending for himself in DANGER FOREST all these years.
+-- Pre-combat fight conv. will be about how he's emo about being left alone, at least one conv. choice to try to justify (or not) your case but eventually you have to fight.
+-- Post-combat fight conv. will be about how he now knows your time training wasn't in vain and he can accept you once again as a friend and asks to join your righteous quest.
+
+@ Leaving DANGER FOREST: (No stupid tunnel, it just teleports you for ezpz programming time)
+
+@ Meeting SAGE:
+-
+-- Pre-combat fight conv.
+-- Post-combat fight conv. will be how through the fight he has come to understand there is still good in the world to fight for and how he'll gladly join you guys!
+
+@ Leaving WALL CITY:
+
+@ Meeting WARRIOR:
+-- His meeting will be super long, you have to defeat his Sensei before you 'battle' him, his sensei is level 1 and only has 1 hp.
+-- His pre-combat conversation will take at least one whole minute to skip through, maybe more.
+-- There IS no combat after the conversation! (Maybe let chat scripts induce combat? Combat can happen then return to the chat?!)
