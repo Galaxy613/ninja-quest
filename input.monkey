@@ -201,15 +201,27 @@ Class NInput '' Formerly NinInput
 	
 	Function GetXAxisDown:Int()
 		Local result:Int = 0
-		If IsDown(N_RIGHT) Then result += 1
-		If IsDown(N_LEFT) Then result -= 1
+		
+		If currentPoll = 0 Then
+			If IsDown(N_RIGHT) Then result = 1
+			If IsDown(N_LEFT) Then result = -1
+		ElseIf result <> 0
+			currentPoll = 0
+		EndIf
+		
 		Return result
 	End
 	
 	Function GetYAxisDown:Int()
 		Local result:Int = 0
-		If IsDown(N_DOWN) Then result += 1
-		If IsDown(N_UP) Then result -= 1
+		
+		If currentPoll = 0 Then
+			If IsDown(N_DOWN) Then result += 1
+			If IsDown(N_UP) Then result -= 1
+		ElseIf result <> 0
+			currentPoll = 0
+		EndIf
+		
 		Return result
 	End
 	
@@ -228,7 +240,7 @@ Class NInput '' Formerly NinInput
 			
 			V_Start.Update()
 		End
-			
+		
 		currentPoll = (currentPoll + 1) Mod pollSpeed
 	End
 	

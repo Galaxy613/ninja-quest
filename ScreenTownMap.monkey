@@ -378,6 +378,10 @@ Class SMap Extends TScreen
 	End
 	
 	Method _CheckVillage:Bool(specialID:Int, inFront:Bool = False)
+		If not gameTriggers.Contains("m" + specialID)
+			gameTriggers.Add("m" + specialID, "0");
+		End
+		
 		Select specialID - 128 + 1
 			Case 1 ''' Ninja Village
 				lastTown = specialID
@@ -401,13 +405,9 @@ Class SMap Extends TScreen
 				
 			Case 10 ''' Pit
 				lastTown = specialID
-				If gameTriggers.Contains("m129")
-					If gameTriggers.Get("m129") = "1" Then
-						GMessageTicker.Add("Nothing here.")
-					Else
-						gameTriggers.Remove("m129")
-						GMessageTicker.Add("You feel a chill.")
-					End
+				
+				If gameTriggers.Get("m" + specialID) = "1" Then
+					GMessageTicker.Add("Nothing here.")
 				Else
 					SwitchScreenTo combatScreen
 					Local cmtScn:SCombat = SCombat(combatScreen)
@@ -420,7 +420,7 @@ Class SMap Extends TScreen
 					GMessageTicker.Add("'Haha puny human,")
 					GMessageTicker.Add("you will die this day!'")
 					cmtScn.placeMonsters()
-					gameTriggers.Set("m129", "0")
+					gameTriggers.Set("m" + specialID, "0")
 				End
 				
 			Case (16 * 1) + 0 '' YELLOW
@@ -469,6 +469,11 @@ Class SMap Extends TScreen
 	
 End
 
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 Private
 

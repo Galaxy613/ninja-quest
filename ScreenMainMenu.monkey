@@ -193,9 +193,9 @@ Class SMainMenu Extends TScreen
 	'	If NinInput.IsHit(N_B) Then BackToMenu()
 	End
 	Method _Draw:Void()
-		GDrawTextPreserveBlend("Programmed by Karl Nyborg", 0, 144 - 16)
+		GDrawTextPreserveBlend("Made by Karl Nyborg", 0, 144 - 16)
 		GDrawTextPreserveBlend("Battle Art by Yokomeshi", 0, 144 - 24)
-		GDrawTextPreserveBlend("ITP 2013-14 - Alpha v4", 0, 144 - 8)
+		GDrawTextPreserveBlend("2013-16 - Alpha v5", 0, 144 - 8)
 	End
 	
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
