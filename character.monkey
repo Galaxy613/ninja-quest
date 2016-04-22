@@ -182,19 +182,8 @@ Class DCharacter Extends TAttributes
 		Return Name + " " + HP + "/" + maxHP + " Lvl" + Level + " S" + StrengthBuffed + " E" + EnduranceBuffed + " K" + KnowledgeBuffed + " L" + LuckBuffed + " B" + Buffs.Count()
 	End
 	
-	Method Draw:Void(xx:Int, yy:Int, drawXP:Bool = False)
+	Method Draw:Void(xx:Int, yy:Int)
 		GHealthDrawer.Draw(xx - 4, yy, Float(HP) / maxHP, img.Height + 2)
-		If drawXP Then
-			If HP = 0 Then
-				GDrawTextPreserveBlend("K.O.", xx + 24 + 4, yy + 4)
-			Else
-				If LvlUp Then
-					GDrawTextPreserveBlend("LEVEL UP!", xx + 24 + 4, yy + 4)
-				Else
-					GDrawTextPreserveBlend(XPNextLevel + "xp left", xx + 24 + 4, yy + 4)
-				End
-			End
-		End
 		If HP = 0 Then
 			DrawImage(img, xx, yy + img.Width, 90, 1, 1, frame)
 		Else
@@ -202,8 +191,8 @@ Class DCharacter Extends TAttributes
 		End
 	End
 	
-	Method Draw:Void(drawXP:Bool = False)
-		Draw(x, y, drawXP)
+	Method Draw:Void()
+		Draw(x, y)
 	End
 	
 	Method SetPosition:Void(xx:Int, yy:Int)
@@ -456,11 +445,11 @@ Class DBuff
 End
 
 Class DMonster Extends DCharacter
-	Method Draw:Void(xp:Bool = False)
-		Super.Draw(xp)
+	Method Draw:Void()
+		Super.Draw
 	End
 	
-	Method Draw:Void(xx:Int, yy:Int, xp:Bool)
+	Method Draw:Void(xx:Int, yy:Int)
 		GHealthDrawer.Draw(xx + img.Width + 4, yy, Float(HP) / maxHP, img.Height + 2)
 		If HP = 0 Then
 			DrawImage(img, xx, yy + img.Width, 90, 1, 1, frame)

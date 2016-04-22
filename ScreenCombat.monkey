@@ -26,7 +26,7 @@ Class SCombat Extends TScreen
 	
 	Field SelectedSkill:String = ""
 	
-	Method Clear:Void()
+	Method Clear:Void() ''' Reset the combat screen.
 		combatTarget = Null
 		enemyList.Clear()
 		blockingEffect = Null
@@ -138,7 +138,18 @@ Class SCombat Extends TScreen
 		End
 		
 		For Local ply:DCharacter = EachIn playerCharacters
-			ply.Draw(modes.current = modes.win)
+			ply.Draw
+			If modes.current = modes.win
+				If ply.HP = 0 Then
+					GDrawTextPreserveBlend("K.O.", ply.x + 24 + 4, ply.y + 4)
+				Else
+					If ply.LvlUp Then
+						GDrawTextPreserveBlend("LEVEL UP!", ply.x + 24 + 4, ply.y + 4)
+					Else
+						GDrawTextPreserveBlend(ply.XPNextLevel + xpGained - menuColumn + "xp left", ply.x + 24 + 4, ply.y + 4)
+					End
+				End
+			EndIf
 		Next
 		
 		Local curEmyNum:Int = 0
@@ -331,7 +342,10 @@ Class SCombat Extends TScreen
 	'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	''''''''''''''' MODE PLAYER
 	Method modePlayerDraw:Void()
-		'menuIndex
+		If (curCharData = Null)
+			GDrawTextPreserveBlend("No Current Character", 41 + 3, 106 + 4)
+			Return
+		EndIf
 		
 		GDrawTextPreserveBlend("<-", curCharData.x + 24, curCharData.y + 8)
 		
@@ -825,6 +839,10 @@ Class SCombat Extends TScreen
 		currentCharTurn = 5
 		
 		modes.current = modes.win
+		
+		If gameTriggers.Get("m" + ConvertToSpecialID(10)) = "1" Then
+			GMessageTicker.Add("'How? Meer mortals..'")
+		End
 	End
 	
 	Method modeWinDraw:Void()
@@ -850,21 +868,9 @@ Class SCombat Extends TScreen
 		If menuIndex > goldGained Then menuIndex = goldGained
 		
 		If (NInput.IsHit(N_A)) Then
-		
-			If GMessageTicker.curMsg = "" And menuIndex = goldGained And menuColumn = xpGained Then
-				SwitchScreenTo townMapScreen
-				Clear()
-				For Local ply:DCharacter = EachIn playerCharacters
-					If ply.HP < 1 Then ply.HP = 1
-				Next
-				If gameTriggers.Get("m129") = "0" Then
-					gameTriggers.Set("m129", "1")
-					GMessageTicker.Add("'How? Meer mortals..'")
-				End
-			End
+			If GMessageTicker.curMsg = "" And menuIndex = goldGained And menuColumn = xpGained Then EndCombat
 			If GMessageTicker.curMsg <> "" Then GMessageTicker.Skip
 		End
-		
 		
 		If currentCharTurn = 0 Then
 			For Local ply:DCharacter = EachIn playerCharacters
@@ -876,6 +882,36 @@ Class SCombat Extends TScreen
 			currentCharTurn -= 1
 		End
 	'	If msgList.Count() = 0 And curMsg = "" Then EndApp()
+	End
+	
+	Method EndCombat:Void()
+		SwitchScreenTo townMapScreen
+		Clear()
+		
+		For Local ply:DCharacter = EachIn playerCharacters
+			If ply.HP < 1 Then ply.HP = 1
+		Next		
+		
+		If gameTriggers.Get("m" + ConvertToSpecialID(2)) = "1" Then ''' DANGER FOREST
+			gameTriggers.Set("m" + ConvertToSpecialID(2), "2")
+				
+			If archer = Null Then
+				GMessageTicker.Add("Archer joined your Party!")
+				archer = New DCharacter()
+				archer.accessory = DItem.Generate(DItem.TYPE_EQUIP, 4)
+				archer.InitStats(4, 5, 3)
+				archer.InitLevel(ninja.Level / 2, "ARCHER")
+				archer.img = imageMap.Get("archer")
+				archer.Skills.Add("cure", "")
+		'		archer.Skills.Add("poison", "")
+		'		archer.Skills.Add("ice", "")
+				playerCharacters.AddLast(archer)
+			End
+		End
+		
+		If gameTriggers.Get("m" + ConvertToSpecialID(10)) = "1" Then ''' THE PIT
+			gameTriggers.Set("m" + ConvertToSpecialID(10), "2")
+		End
 	End
 	''''''''''''''' MODE RUN
 	Method GoToRun:Void()

@@ -127,6 +127,13 @@ Class SMap Extends TScreen
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	''' Helper Functions
 	
+	Method GetCurrentSpecialTile:Int()
+		return map.currentSpecial[y][x]
+	End
+	Method GetCurrentSpecialTileID:Int(type:Int = 0)
+		Return ConvertFromSpecialID(map.currentSpecial[y][x], type)
+	End
+	
 	Method GetSpecialTileInFrontOfYou:Int()
 		Select dir
 			Case 0
@@ -166,9 +173,9 @@ Class SMap Extends TScreen
 				Case 0 '' Inn
 					For Local ply:DCharacter = EachIn playerCharacters
 						ply.HP = ply.maxHP
-						GMessageTicker.Add("Party HP Restored!")
 						nextBattle = Int(Rnd(3, 10))
 					Next
+					GMessageTicker.Add("Party HP Restored!")
 					
 				Case 1 '' Shoppe
 					modes.current = modes.equip
@@ -176,13 +183,20 @@ Class SMap Extends TScreen
 					menuIndex = 0
 				
 				Case 2 '' Talk
-					Select lastTown - 128
-						Case 0 '' Ninja Village
+					Select lastTown - 128 + 1
+						Case 1' "NINJA VILLAGE"
 							SConversation(chatScreen).RunCutscene("ThankYouNinja")
 							SwitchScreenTo(chatScreen)
-							
-						Case 2 '' Forest?
-							'
+					'	Case 2' "DANGER FOREST"
+					'	Case 3' "CRAZY MINES"
+					'	Case 4' "WALL CITY"
+					'	Case 5' "WINDY PLAINS"
+					'	Case 6' "SMELLY MARCHES"
+					'	Case 7' "MOUNTAINGRAD"
+					'	Case 8' "MT.KRUGDOR"
+					'	Case 9'	"THE TOWER"
+						Default
+							GMessageTicker.Add "No one wants to talk."
 					End
 				
 				Case 3 '' Back
@@ -284,7 +298,8 @@ Class SMap Extends TScreen
 				Case -1
 					dir = 3; moved = True
 			End
-			If GetSpecialTileInFrontOfYou() < 128 + 15 And moved = True Then
+			
+			If ( (GetSpecialTileInFrontOfYou() < 128 + 15) Or (gameTriggers.Get("m" + (GetSpecialTileInFrontOfYou() -16)) = 2)) And moved = True Then
 				MoveYouForward()
 				moved = CheckTileEffect(map.currentSpecial[y][x], False) '' Design change, 3/20/16 - ALWAYS check the tile after a move!
 			EndIf
@@ -297,7 +312,7 @@ Class SMap Extends TScreen
 			If nextBattle > 0 Then
 				nextBattle -= 1
 			Else
-				nextBattle = Int(Rnd(3, 20))
+				nextBattle = Int(Rnd(5, 20))
 				
 				If GetCurrentZoneName("safe") = "" Then '' Only proceed if there are no zones called "safe" at this position!
 					If GetCurrentZoneName("monsters_") <> "" Then RandomBattle(GetCurrentZoneName("monsters_"))
@@ -338,20 +353,22 @@ Class SMap Extends TScreen
 	End
 	
 	Method DrawPlayer:Void()
+		Local frame:int = 0
 		'DrawImage(tilemap, (16 * 5) - 8, 16 * 4, 3)
 		If dir = 1 or dir = 3
 			If dir = 1 Then
-				DrawImage(charmap, (16 * 5) - 8, 16 * 4, 0)
+				frame = 0
 			Else
-				DrawImage(charmap, (16 * 5) - 8, 16 * 4, 3)
+				frame = 3
 			End
 		Else
 			If dir = 0 Then
-				DrawImage(charmap, (16 * 5) - 8, 16 * 4, 16 + 0)
+				frame = 16 + 0
 			Else
-				DrawImage(charmap, (16 * 5) - 8, 16 * 4, 16 + 3)
+				frame = 16 + 3
 			End
 		End
+		DrawImage(charmap, (16 * 5) - 8 + NInput.GetXAxis(), 16 * 4 + NInput.GetYAxis(), frame)
 	End
 	
 	Method GetCurrentZoneName:String(prefix:String = "_")
@@ -381,46 +398,156 @@ Class SMap Extends TScreen
 		If not gameTriggers.Contains("m" + specialID)
 			gameTriggers.Add("m" + specialID, "0");
 		End
+		lastTown = specialID
 		
-		Select specialID - 128 + 1
+		Select ConvertFromSpecialID(specialID) 'specialID - 128 + 1
 			Case 1 ''' Ninja Village
-				lastTown = specialID
 				BackToMenu()
 				
 				
 			Case 2 ''' Danger Forest
-				lastTown = specialID
-				If archer = Null Then
-					GMessageTicker.Add("Archer joined your Party!")
-					archer = New DCharacter()
-					archer.accessory = DItem.Generate(DItem.TYPE_EQUIP, 4)
-					archer.InitStats(4, 5, 3)
-					archer.InitLevel(3, "ARCHER")
-					archer.img = imageMap.Get("archer")
-					archer.Skills.Add("cure", "")
-					archer.Skills.Add("poison", "")
-					archer.Skills.Add("ice", "")
-					playerCharacters.AddLast(archer)
+			'	lastTown = specialID
+				
+				If gameTriggers.Get("m" + specialID) = "2" Then
+					'GMessageTicker.Add("Nothing here.")
+					''' HP Restored
+					For Local ply:DCharacter = EachIn playerCharacters
+						ply.HP = ply.maxHP
+						nextBattle = Int(Rnd(3, 10))
+					Next
+					GMessageTicker.Add("Party HP Restored!")
+				Else
+					''
+					'MessageTicker.Add("you will die this day!'")
+					GMessageTicker.Add("I can't believe you")
+					GMessageTicker.Add("left the forest over")
+					GMessageTicker.Add("training with the ninjas!")
+					GMessageTicker.Add("Defend yourself!")
+					
+					''
+					SwitchScreenTo combatScreen
+					Local cmtScn:SCombat = SCombat(combatScreen)
+					cmtScn.enemyList.AddLast(New CharArcher(10))
+					'cmtScn.enemyList.First().Name = "BAHAMAUT"
+					cmtScn.placeMonsters()
+					gameTriggers.Set("m" + specialID, "1")
 				End
 				
-			Case 10 ''' Pit
-				lastTown = specialID
+			Case 3' "CRAZY MINES"
+			'	lastTown = specialID
 				
-				If gameTriggers.Get("m" + specialID) = "1" Then
-					GMessageTicker.Add("Nothing here.")
+				If gameTriggers.Get("m" + specialID) = "2" Then
+					''' HP Restored
+					For Local ply:DCharacter = EachIn playerCharacters
+						ply.HP = ply.maxHP
+						nextBattle = Int(Rnd(3, 10))
+					Next
+					GMessageTicker.Add("Party HP Restored!")
+				Else
+					''
+					SwitchScreenTo combatScreen
+					Local cmtScn:SCombat = SCombat(combatScreen)
+					'cmtScn.Clear
+					cmtScn.enemyList.AddLast(New FrogWasp(30))
+					cmtScn.enemyList.First().AddSkill("fire")
+					cmtScn.placeMonsters()
+					gameTriggers.Set("m" + specialID, "1")
+				End
+			Case 4' "WALL CITY"
+				BackToMenu()
+				
+			Case 5' "WINDY PLAINS"				
+				If gameTriggers.Get("m" + specialID) = "2" Then
+					''' HP Restored
+					For Local ply:DCharacter = EachIn playerCharacters
+						ply.HP = ply.maxHP
+						nextBattle = Int(Rnd(3, 10))
+					Next
+					GMessageTicker.Add("Party HP Restored!")
+				Else
+					''
+					SwitchScreenTo combatScreen
+					Local cmtScn:SCombat = SCombat(combatScreen)
+					cmtScn.enemyList.AddLast(New FrogWasp(45))
+					cmtScn.enemyList.AddLast(New FrogWasp(45))
+					cmtScn.enemyList.First().AddSkill("fire")
+					cmtScn.placeMonsters()
+					gameTriggers.Set("m" + specialID, "1")
+				End
+				
+			Case 6' "SMELLY MARCHES"
+				If gameTriggers.Get("m" + specialID) = "2" Then
+					'GMessageTicker.Add("Nothing here.")
+					''' HP Restored
+					For Local ply:DCharacter = EachIn playerCharacters
+						ply.HP = ply.maxHP
+						nextBattle = Int(Rnd(3, 10))
+					Next
+					GMessageTicker.Add("Party HP Restored!")
+				Else
+					GMessageTicker.Add("Debug")
+					gameTriggers.Set("m" + specialID, "2")
+				EndIf
+				
+			Case 7' "MOUNTAINGRAD"
+				BackToMenu()
+				
+			Case 8' "MT.KRUGDOR"
+				If gameTriggers.Get("m" + specialID) = "2" Then
+					'GMessageTicker.Add("Nothing here.")
+					''' HP Restored
+					For Local ply:DCharacter = EachIn playerCharacters
+						ply.HP = ply.maxHP
+						nextBattle = Int(Rnd(3, 10))
+					Next
+					GMessageTicker.Add("Party HP Restored!")
+				Else
+					GMessageTicker.Add("Debug")
+					gameTriggers.Set("m" + specialID, "2")
+				EndIf
+				
+			Case 9' "THE TOWER"
+				If gameTriggers.Get("m" + specialID) = "2" Then
+					'GMessageTicker.Add("Nothing here.")
+					''' HP Restored
+					For Local ply:DCharacter = EachIn playerCharacters
+						ply.HP = ply.maxHP
+						nextBattle = Int(Rnd(3, 10))
+					Next
+					GMessageTicker.Add("Party HP Restored!")
 				Else
 					SwitchScreenTo combatScreen
 					Local cmtScn:SCombat = SCombat(combatScreen)
+					cmtScn.enemyList.AddLast(New FrogWasp(75))
+					cmtScn.enemyList.AddLast(New FrogWasp(75))
+					cmtScn.enemyList.AddLast(New FrogWasp(75))
+					cmtScn.enemyList.First().AddSkill("fire")
+					cmtScn.placeMonsters()
+					gameTriggers.Set("m" + specialID, "1")
+				EndIf
+				
+			Case 10 ''' Pit
+			'	lastTown = specialID
+				
+				If gameTriggers.Get("m" + specialID) = "2" Then
+					GMessageTicker.Add("Nothing here.")
+				Else
+					''
+					GMessageTicker.Add("You found Bahamaut!")
+					GMessageTicker.Add("'Haha puny human,")
+					GMessageTicker.Add("you will die this day!'")
+					
+					''
+					SwitchScreenTo combatScreen
+					Local cmtScn:SCombat = SCombat(combatScreen)
+					'cmtScn.Clear
 					cmtScn.enemyList.AddLast(New FrogWasp(25))
 					cmtScn.enemyList.First().Name = "BAHAMAUT"
 					cmtScn.enemyList.First().AddSkill("fire")
 					cmtScn.enemyList.First().AddSkill("fire")
 					cmtScn.enemyList.First().AddSkill("fire")
-					GMessageTicker.Add("You found Bahamaut!")
-					GMessageTicker.Add("'Haha puny human,")
-					GMessageTicker.Add("you will die this day!'")
 					cmtScn.placeMonsters()
-					gameTriggers.Set("m" + specialID, "0")
+					gameTriggers.Set("m" + specialID, "1")
 				End
 				
 			Case (16 * 1) + 0 '' YELLOW

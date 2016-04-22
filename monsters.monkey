@@ -129,14 +129,14 @@ Class FrogCockroach Extends DMonster
 	Method InitLevel:Void(lvl = 1, nme:String = "")
 		img = imageMap.Get("monsters")
 		frame = 6
-'		If lvl > 6 Then
-'			lvl = 5 + ( (lvl - 5) / 2)
-'		End
+		'		If lvl > 6 Then
+		'			lvl = 5 + ( (lvl - 5) / 2)
+		'		End
 		
-	'	Strength = Rnd(lvl / 2, lvl * 1.5)
-	'	Endurance = lvl
-	'	Knowledge = lvl / 2
-	'	Luck = lvl
+		'	Strength = Rnd(lvl / 2, lvl * 1.5)
+		'	Endurance = lvl
+		'	Knowledge = lvl / 2
+		'	Luck = lvl
 		Strength = 1
 		Endurance = 1
 		Knowledge = 1
@@ -163,15 +163,7 @@ Class FrogShambler Extends DMonster
 	Method InitLevel:Void(lvl = 1, nme:String = "")
 		img = imageMap.Get("monsters")
 		frame = 7
-'		If lvl < 7 Then lvl = 7
-'		If lvl > 15 Then
-'			lvl = 14 + ( (lvl - 14) / 2)
-'		End
 		
-'		Strength = lvl - 3
-'		Endurance = lvl - 2
-'		Knowledge = lvl * 3
-'		Luck = lvl * 3
 		Strength = 1
 		Endurance = 2
 		Knowledge = 3
@@ -195,6 +187,28 @@ Class FrogShambler Extends DMonster
 		AddWeakness("attack", -1)
 		
 		Level = lvl
+		XPNextLevel = 0
+	End
+End
+
+Class CharArcher Extends DMonster
+	Method New(level:Int); InitLevel(level); End
+	Method InitLevel:Void(lvl = 1, nme:String = "")
+		img = imageMap.Get("archer")
+		frame = 1
+		
+		Strength = 10
+		Endurance = 3
+		Knowledge = 5
+		Luck = 15
+		LevelToLevel(10)
+		UpdateBuffs()
+		
+		HP = maxHP
+		Name = "ARCHER"
+		AddSkill("ice")
+		
+		Level = 10'lvl
 		XPNextLevel = 0
 	End
 End

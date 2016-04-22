@@ -137,3 +137,13 @@ Function CheckEvent:Void(eN:String, data:String)
 			'
 	End
 End
+
+''' Game Trigger helper Functions
+''' Convert 128 to 1
+Function ConvertFromSpecialID:Int(ID:Int, type:Int = 0)
+	Return (ID - 128 + 1 + (type * 16))
+End
+''' Convert 1 to 128
+Function ConvertToSpecialID:Int(ID:Int, type:Int = 0)
+	Return (ID + 128 - 1 + (type * 16))
+End
