@@ -154,7 +154,8 @@ Class SMainMenu Extends TScreen
 					If LoadState() <> "" Then
 						LoadGame(JSONObject(JSONData.ReadJSON(LoadState())))
 						SwitchScreenTo(townMapScreen)
-						SMap(townMapScreen).StartAt(lastTown)
+						'SMap(townMapScreen).StartAt(lastTown)
+						ClearActiveEvents()
 					End
 				
 				Case 2
@@ -195,7 +196,7 @@ Class SMainMenu Extends TScreen
 	Method _Draw:Void()
 		GDrawTextPreserveBlend("Made by Karl Nyborg", 0, 144 - 16)
 		GDrawTextPreserveBlend("Battle Art by Yokomeshi", 0, 144 - 24)
-		GDrawTextPreserveBlend("2013-16 - Alpha v5", 0, 144 - 8)
+		GDrawTextPreserveBlend("2013-16 - Alpha v6", 0, 144 - 8)
 	End
 	
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''

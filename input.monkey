@@ -20,7 +20,7 @@ Class NInput '' Formerly NinInput
 	Global V_UP:GButton = Null, V_DOWN:GButton = Null, V_LEFT:GButton = Null, V_RIGHT:GButton = Null
 	Global V_Start:GButton = Null
 	
-	Global currentPoll:Int = 0, pollSpeed:Int = 3
+	Global currentPoll:Int = 0, pollSpeed:Int = 5
 	
 	Function CreateVirtualControls(type:Int = 0)
 		Local height:Int = (DeviceHeight() / g_scale) - 144.0

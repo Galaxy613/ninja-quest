@@ -162,9 +162,9 @@ Class SConversation Extends TScreen
 	'		GDrawTextPreserveBlend("Press A to Continue!", 2, 2)
 	'	End
 		If Not isReadingText Then GDrawTextPreserveBlend("Press A", 114, 144 - 8)
-		GDrawTextPreserveBlend("Txt " + BoolToString(isReadingText), 2, 2 + 8 * 1)
-		GDrawTextPreserveBlend("tree " + BoolToString(treeEnded), 2, 2 + 8 * 2)
-		GDrawTextPreserveBlend("mode " + modes.current, 2, 2 + 8 * 3)
+'		GDrawTextPreserveBlend("Txt " + BoolToString(isReadingText), 2, 2 + 8 * 1)
+'		GDrawTextPreserveBlend("tree " + BoolToString(treeEnded), 2, 2 + 8 * 2)
+'		GDrawTextPreserveBlend("mode " + modes.current, 2, 2 + 8 * 3)
 	End
 	
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''

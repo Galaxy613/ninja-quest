@@ -14,9 +14,9 @@
 
 {
 	"init":[
-		["add_object",			"ninja",24,50,"ninja"],
-		["add_object",			"elder",136,44,"magi"],
-		["scale_object",		"elder",-1.0,1.0]
+		["add_object",			"ninja",32,44,"ninja"],
+		["add_object",			"elder",128,44,"magi"],
+		["scale_object",			"elder",-1.0,1.0]
 	],
 	"main":[
 		["animation_change",	"elder","1","1"],

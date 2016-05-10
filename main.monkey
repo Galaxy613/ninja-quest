@@ -49,7 +49,7 @@ Class MainClass Extends App
 	
 	Method OnCreate:Int()
 		' App is setup and ready to load resources
-		SetUpdateRate(15)
+		SetUpdateRate(20) '' Was originially 15
 		
 		UpdateScale()
 		NLog LoadState()

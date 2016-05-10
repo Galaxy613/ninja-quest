@@ -42,6 +42,8 @@ Class SMap Extends TScreen
 		
 		nextBattle = Int(Rnd(3, 10))
 		
+		Print("Initing player at [" + x + "," + y + "]")
+		
 		Return 0
 	End
 	
@@ -50,12 +52,14 @@ Class SMap Extends TScreen
 		If map.SearchMap(map.currentSpecial, id) Then
 			x = map.tmpX
 			y = map.tmpY
+			Print("Starting player at " + id + " [" + x + "," + y + "]")
 		End
 	End
 	
 	Method StartAt:Void(xx:Int, yy:Int)
 		x = xx
 		y = yy
+		Print("Starting player at [" + x + "," + y + "]")
 	End
 	
 	Method OnUpdate:Int()
@@ -335,12 +339,14 @@ Class SMap Extends TScreen
 		DrawMap( (16 * (x - 5)) + 8, (16 * (y - 4)))
 		DrawPlayer()
 		
-	'	WindowDrawer.Draw(-4, -4, 168, 16)
-	'	CrappyDrawText("cS[" + y + "][" + x + "] = " + map.currentSpecial[y][x], 0, 0)
+		'	WindowDrawer.Draw(-4, -4, 168, 16)
+		'	CrappyDrawText("cS[" + y + "][" + x + "] = " + map.currentSpecial[y][x], 0, 0)
+	'	GDrawTextPreserveBlend(x + "," + y, 0, 0)
 		
 		If map.currentSpecial[y][x] > 127 Then
 			GWindowDrawer.Draw(-4, 144 - 12, 168, 16)
-			GDrawTextPreserveBlend(map.currentSpecial[y][x] + " " + WorldMap_Names(), 1, 144 - 9)
+			'GDrawTextPreserveBlend(map.currentSpecial[y][x] + " " + WorldMap_Names(), 1, 144 - 9)
+			GDrawTextPreserveBlend(WorldMap_Names(), 1, 144 - 9)
 		End
 	End
 	
@@ -418,7 +424,6 @@ Class SMap Extends TScreen
 					GMessageTicker.Add("Party HP Restored!")
 				Else
 					''
-					'MessageTicker.Add("you will die this day!'")
 					GMessageTicker.Add("I can't believe you")
 					GMessageTicker.Add("left the forest over")
 					GMessageTicker.Add("training with the ninjas!")

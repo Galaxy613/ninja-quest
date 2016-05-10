@@ -330,11 +330,7 @@ Class SCombat Extends TScreen
 			If ply.HP > 0 Then gameOver = False
 		Next
 		If gameOver Then
-			SwitchScreenTo(townMapScreen, False)
-			
-			For Local ply:DCharacter = EachIn playerCharacters
-				If ply.HP < 1 Then ply.HP = 1
-			Next
+			EndCombatLose
 			NLog "GAME OVER"
 		End
 		Return gameOver
@@ -868,7 +864,7 @@ Class SCombat Extends TScreen
 		If menuIndex > goldGained Then menuIndex = goldGained
 		
 		If (NInput.IsHit(N_A)) Then
-			If GMessageTicker.curMsg = "" And menuIndex = goldGained And menuColumn = xpGained Then EndCombat
+			If GMessageTicker.curMsg = "" And menuIndex = goldGained And menuColumn = xpGained Then EndCombatWin
 			If GMessageTicker.curMsg <> "" Then GMessageTicker.Skip
 		End
 		
@@ -884,13 +880,24 @@ Class SCombat Extends TScreen
 	'	If msgList.Count() = 0 And curMsg = "" Then EndApp()
 	End
 	
-	Method EndCombat:Void()
+	Method EndCombatLose:Void()
 		SwitchScreenTo townMapScreen
 		Clear()
 		
 		For Local ply:DCharacter = EachIn playerCharacters
 			If ply.HP < 1 Then ply.HP = 1
-		Next		
+		Next
+		
+		ClearActiveEvents
+	End
+	
+	Method EndCombatWin:Void()
+		SwitchScreenTo townMapScreen
+		Clear()
+		
+		For Local ply:DCharacter = EachIn playerCharacters
+			If ply.HP < 1 Then ply.HP = 1
+		Next
 		
 		If gameTriggers.Get("m" + ConvertToSpecialID(2)) = "1" Then ''' DANGER FOREST
 			gameTriggers.Set("m" + ConvertToSpecialID(2), "2")
@@ -903,8 +910,8 @@ Class SCombat Extends TScreen
 				archer.InitLevel(ninja.Level / 2, "ARCHER")
 				archer.img = imageMap.Get("archer")
 				archer.Skills.Add("cure", "")
-		'		archer.Skills.Add("poison", "")
-		'		archer.Skills.Add("ice", "")
+				'		archer.Skills.Add("poison", "")
+				'		archer.Skills.Add("ice", "")
 				playerCharacters.AddLast(archer)
 			End
 		End
@@ -912,6 +919,8 @@ Class SCombat Extends TScreen
 		If gameTriggers.Get("m" + ConvertToSpecialID(10)) = "1" Then ''' THE PIT
 			gameTriggers.Set("m" + ConvertToSpecialID(10), "2")
 		End
+		
+		ClearActiveEvents
 	End
 	''''''''''''''' MODE RUN
 	Method GoToRun:Void()
@@ -935,11 +944,7 @@ Class SCombat Extends TScreen
 		
 		If (NInput.IsHit(N_A)) Then
 			If GMessageTicker.curMsg = "" Then
-				SwitchScreenTo townMapScreen
-				Clear()
-				For Local ply:DCharacter = EachIn playerCharacters
-					If ply.HP < 1 Then ply.HP = 1
-				Next
+				EndCombatLose
 			Else
 				GMessageTicker.Skip
 			End

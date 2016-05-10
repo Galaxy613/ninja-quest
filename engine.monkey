@@ -138,6 +138,16 @@ Function CheckEvent:Void(eN:String, data:String)
 	End
 End
 
+Function ClearActiveEvents:Void() '' Clear map events that are in progress
+	For Local i:Int = 0 To 16
+		Print("m" + (i + 128) + " = " + gameTriggers.Get("m" + (128 + i)))
+		If gameTriggers.Get("m" + (128 + i)) = "1" Then
+			gameTriggers.Set("m" + (128 + i), "0")
+			Print "Set to 0!"
+		End
+	Next
+End
+
 ''' Game Trigger helper Functions
 ''' Convert 128 to 1
 Function ConvertFromSpecialID:Int(ID:Int, type:Int = 0)
