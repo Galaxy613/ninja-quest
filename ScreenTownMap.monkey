@@ -66,8 +66,8 @@ Class SMap Extends TScreen
 		GMessageTicker.Update
 		
 		Select modes.current
-			Case modes.menu
-				MENU_Update
+			Case modes.town
+				TOWN_Update
 '			Case modes.info
 '				INFO_Update
 '			Case modes.skill
@@ -92,8 +92,8 @@ Class SMap Extends TScreen
 	
 	Method OnRender:Int()
 		Select modes.current
-			Case modes.menu
-				MENU_Draw()
+			Case modes.town
+				TOWN_Draw()
 '			Case modes.info
 '				INFO_Draw
 '			Case modes.skill
@@ -118,8 +118,8 @@ Class SMap Extends TScreen
 		Return 0
 	End
 	
-	Method BackToMenu:Void()
-		modes.current = modes.menu
+	Method GoToTown:Void()
+		modes.current = modes.town
 		
 		menuIndex = 0
 		menuColumn = 0
@@ -169,7 +169,7 @@ Class SMap Extends TScreen
 	'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	''''''''''''''''''''''' MENU
 	
-	Method MENU_Update:Void()
+	Method TOWN_Update:Void()
 		UpDownMenu(4)
 		
 		If NInput.IsHit(N_A)
@@ -217,7 +217,7 @@ Class SMap Extends TScreen
 		End
 	End
 	
-	Method MENU_Draw:Void()
+	Method TOWN_Draw:Void()
 		DrawMap( (16 * (x - 5)) + 8, (16 * (y - 4)))
 	'	DrawPlayer()
 		
@@ -238,23 +238,26 @@ Class SMap Extends TScreen
 	''''''''''''''''''''''' EQUIP
 	
 	Method EQUIP_Update:Void()
-		UpDownMenu(4)
+		UpDownMenu(5)
 		
 		If NInput.IsHit(N_A)
 			Select menuIndex
 				Case 0 ''
+					GMessageTicker.Add("No one is selling!")
 					
 				Case 1 ''
+					GMessageTicker.Add("No one is buying!")
 				
 				Case 2 ''
+					GMessageTicker.Add("No one is training!")
 				
-				Case 3 ''
-					BackToMenu()
+				Case 4 ''
+					GoToTown()
 			End
 		End
 		
 		If NInput.IsHit(N_B)
-			BackToMenu()
+			GoToTown()
 		End
 	End
 	
@@ -271,15 +274,16 @@ Class SMap Extends TScreen
 		
 		GDrawTextPreserveBlend("BUY", vScnWidth - 54, 16)
 		GDrawTextPreserveBlend("SELL", vScnWidth - 54, 16 + (1 * 8))
-		GDrawTextPreserveBlend(" ", vScnWidth - 54, 16 + (2 * 8))
-		GDrawTextPreserveBlend("BACK", vScnWidth - 54, 16 + (3 * 8))
+		GDrawTextPreserveBlend("TRAIN", vScnWidth - 54, 16 + (2 * 8))
+		GDrawTextPreserveBlend(" ", vScnWidth - 54, 16 + (3 * 8))
+		GDrawTextPreserveBlend("BACK", vScnWidth - 54, 16 + (4 * 8))
 	End
 	
 	'''''''''''''''''''''''''''''''''''''
 	''''''''''''''''''''''' Walking about
 	
 	Method _Update:Void()
-	'	If NinInput.IsHit(N_B) Then BackToMenu()
+	'	If NinInput.IsHit(N_B) Then GoToTown()
 		If NInput.IsHit(N_Start) Then SwitchScreenTo characterScreen'; NLog "To Char"
 		
 		'''' Do Movement
@@ -289,7 +293,7 @@ Class SMap Extends TScreen
 			x += NInput.GetXAxis()
 			y += NInput.GetYAxis()
 		Else
-			
+			''' IF the player isn't cheating, check the movement correctly.
 			Select NInput.GetXAxis()
 				Case 1
 					dir = 0; moved = True
@@ -303,9 +307,17 @@ Class SMap Extends TScreen
 					dir = 3; moved = True
 			End
 			
-			If ( (GetSpecialTileInFrontOfYou() < 128 + 15) Or (gameTriggers.Get("m" + (GetSpecialTileInFrontOfYou() -16)) = 2)) And moved = True Then
-				MoveYouForward()
-				moved = CheckTileEffect(map.currentSpecial[y][x], False) '' Design change, 3/20/16 - ALWAYS check the tile after a move!
+			''' If the player has moved
+			If moved = True Then
+				''' If the tile is set to a special setting that's passable
+				''' OR if the tile's special trigger is set to done.
+				If ( (GetSpecialTileInFrontOfYou() < 128 + 15) Or (gameTriggers.Get("m" + (GetSpecialTileInFrontOfYou() -16)) = 2)) Then
+					MoveYouForward()
+					moved = CheckTileEffect(map.currentSpecial[y][x]) '' Design change, 3/20/16 - ALWAYS check the tile after a move!
+				EndIf
+			ElseIf NInput.IsHit(N_A)
+				''' If the player hasn't moved, check if the player has press A
+				CheckTileEffect(map.currentSpecial[y][x])
 			EndIf
 		'	If moved Then CheckTileEffect(map.currentSpecial[y][x]), False '' Check to see if you triggered something.
 		End
@@ -392,15 +404,15 @@ Class SMap Extends TScreen
 		Return ""
 	End
 	
-	Method CheckTileEffect:Bool(specialID:Int, inFront:Bool = False)
-		''' Finds the function that manage's the map's trigger effects.
-	'	If map.name.Contains("ninja")
-	'		Return _CheckNinjaVillage(specialID)
-	'	End
-		Return _CheckVillage(specialID, inFront)
-	End
+'	Method CheckTileEffect:Bool(specialID:Int, inFront:Bool = False)
+'		''' Finds the function that manage's the map's trigger effects.
+'	'	If map.name.Contains("ninja")
+'	'		Return _CheckNinjaVillage(specialID)
+'	'	End
+'		Return _CheckVillage(specialID, inFront)
+'	End
 	
-	Method _CheckVillage:Bool(specialID:Int, inFront:Bool = False)
+	Method CheckTileEffect:Bool(specialID:Int) ' formerly _CheckVillage
 		If not gameTriggers.Contains("m" + specialID)
 			gameTriggers.Add("m" + specialID, "0");
 		End
@@ -408,7 +420,7 @@ Class SMap Extends TScreen
 		
 		Select ConvertFromSpecialID(specialID) 'specialID - 128 + 1
 			Case 1 ''' Ninja Village
-				BackToMenu()
+				GoToTown()
 				
 				
 			Case 2 ''' Danger Forest
@@ -459,7 +471,7 @@ Class SMap Extends TScreen
 					gameTriggers.Set("m" + specialID, "1")
 				End
 			Case 4' "WALL CITY"
-				BackToMenu()
+				GoToTown()
 				
 			Case 5' "WINDY PLAINS"				
 				If gameTriggers.Get("m" + specialID) = "2" Then
@@ -495,7 +507,7 @@ Class SMap Extends TScreen
 				EndIf
 				
 			Case 7' "MOUNTAINGRAD"
-				BackToMenu()
+				GoToTown()
 				
 			Case 8' "MT.KRUGDOR"
 				If gameTriggers.Get("m" + specialID) = "2" Then
@@ -612,7 +624,7 @@ Private
 Class modes
 	Global current:Int
 	
-	Const menu:Int = 0
+	Const town:Int = 0
 	Const info:Int = 1
 	Const skill:Int = 2
 	Const equip:Int = 3
