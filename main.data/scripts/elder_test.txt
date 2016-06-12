@@ -1,3 +1,0 @@
-thread main
-animation_change elder,1,1
-player_talk 
