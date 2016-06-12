@@ -332,7 +332,7 @@ Class DCharacter Extends TAttributes
 		
 		'NLog "Calcing " + Name + "'s Buffs: " + Buffs.Count()
 		For Local tmp:DBuff = EachIn Buffs
-			NLog "Checking... " + (tmp.type.ToLower()[ .. 3])
+			NLog "Checking... [" + (tmp.type.ToLower()[ .. 3]) + "]" + (tmp.type.ToLower()[3 ..]) + " Amt: " + tmp.amt
 			Select(tmp.type.ToLower()[ .. 3])
 				Case "str"
 					StrengthBuffed += tmp.amt

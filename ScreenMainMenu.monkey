@@ -15,6 +15,7 @@
 ''' STitle - Title screen aka main menu
 '''P modes - fake enum
 Import engine
+Import ninja_quest
 Import ScreenTownMap
 Import ScreenConversation
 
@@ -61,26 +62,7 @@ Class SMainMenu Extends TScreen
 				_Draw()
 			Case modes.newgame
 				Reset()
-				ninja = New DCharacter()
-					ninja.accessory = DItem.Generate(DItem.TYPE_EQUIP, 1)
-					ninja.InitStats(-1, 5, 3)
-					ninja.InitLevel(4, "NINJA")
-					ninja.img = imageMap.Get("ninja")
-				'	ninja.Skills.Add("aero", "")
-				'	ninja.Skills.Add("slash", "")
-					ninja.Skills.Add("smoke", "")
-				playerCharacters.AddLast(ninja)
-		'		NLog ":"
-		'		SaveGame()
-				NLog ":"
-				
-				SwitchScreenTo(townMapScreen)
-				townMapScreen.OnInit()
-				lastTown = 128
-				SMap(townMapScreen).StartAt(lastTown)
-				
-				SConversation(chatScreen).RunCutscene("boring_exposition")
-				SwitchScreenTo(chatScreen)
+				game.NewGame()
 	'		Default
 	'			_Draw()
 		End

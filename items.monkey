@@ -2,6 +2,7 @@ Import engine
 
 Class DItem Extends TAttributes
 	Const TYPE_EQUIP:Int = 0, TYPE_USABLE:Int = 1, TYPE_QUEST:Int = 2
+	Const ITEM_SCARF:Int = 1, ITEM_BOMBS:Int = 2, ITEM_CAP:Int = 3, ITEM_CLOAK:Int = 4, ITEM_LONGSWORD:Int = 5
 	Field type:Int = 0, id:Int, value:Int
 '	Field Buffs:List<BuffData> 			= New List<BuffData>()
 '	Field Weaknesses:StringMap<String> 	= New StringMap<String>()

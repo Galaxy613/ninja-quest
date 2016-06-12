@@ -199,6 +199,8 @@ Class SCombat Extends TScreen
 			End
 		End
 		
+		NLog "Pre affect - " + combatTarget.GetStats() + " Evasion:" + combatTarget.evasion
+		
 		Select spellName.ToLower()
 			''''
 			'' BUFFS
@@ -304,9 +306,10 @@ Class SCombat Extends TScreen
 				GMessageTicker.Add combatTarget.Name + " took " + spellPower + " dmg"
 				combatTarget.HP -= spellPower
 		End
-		NLog combatTarget.GetStats()
+		
+		NLog combatTarget.GetStats() + " Evasion:" + combatTarget.evasion
 		combatTarget.CalculateBuffs()
-		NLog combatTarget.GetStats()
+		NLog "Post affect -- " + combatTarget.GetStats() + " Evasion:" + combatTarget.evasion
 	End
 	
 	'''''''''''''''''''''''''''''''''''''''
@@ -371,7 +374,7 @@ Class SCombat Extends TScreen
 		
 		If NInput.IsHit(N_A)
 			Select menuIndex
-				Case 0
+				Case 0 '''' FIGHT
 					combatTarget = Null
 			'		If enemyList.Count() > 1 Then
 						modes.current = modes.selectEnemyFight
@@ -379,12 +382,12 @@ Class SCombat Extends TScreen
 			'		Else
 			'			modes.current = modes.fight
 			'		End
-				Case 1
+				Case 1 '''' SKILL
 					modes.current = modes.skill
 					menuColumn = 0
 					menuIndex = 0
-				Case 2
-					curCharData.evasion += 50
+				Case 2 '''' BLOCK
+					curCharData.evasion += 75
 					modes.current = modes.nextTurn
 					GMessageTicker.Add(curCharData.Name + " guarded")
 				Default

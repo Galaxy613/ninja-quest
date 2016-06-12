@@ -54,6 +54,7 @@ Class FrogBug Extends DMonster
 		AddWeakness("fire")
 		AddWeakness("ice")
 		AddWeakness("rock")
+		AddWeakness("attack", -1)
 		
 		Level = lvl
 		XPNextLevel = 0
@@ -84,6 +85,7 @@ Class FrogFly Extends DMonster
 		HP = maxHP
 		Name = "FLY"
 		AddSkill("focus")
+		AddWeakness("rock")
 		AddWeakness("aero")
 		
 		Level = lvl
@@ -116,7 +118,6 @@ Class FrogWasp Extends DMonster
 		AddSkill("boost")
 		AddSkill("aero")
 		AddSkill("posion")
-		AddWeakness("rock")
 		AddWeakness("aero")
 		
 	'	Level = lvl

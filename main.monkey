@@ -13,6 +13,7 @@ Class MainClass Extends App
 	Method New()
 		' App is NOT Setup, do only basic data initalizing here.
 		L.InitWQ()
+		game = New NinjaQuest
 	End
 	
 	Method LoadImages:Void()

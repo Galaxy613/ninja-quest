@@ -28,6 +28,7 @@ Global currentScreen:TScreen, lastScreen:TScreen
 	Global chatScreen:TScreen = Null
 
 Global imageMap:StringMap<Image> = New StringMap<Image>()
+Global game:TGame
 
 Global ninja:DCharacter
 Global archer:DCharacter
@@ -44,7 +45,7 @@ Global hasGoneNuclear:Bool = False, nukeMessage:String = ""
 Function Reset:Void()
 	playerGold = 0
 	currentLocation = 0
-	lastTown = 128
+	lastTown = 128 ''' TODO: Check if this is depcrecated by just saving the X and Y coordinates.
 	gameTriggers.Clear()
 	playerCharacters.Clear()
 End
@@ -77,6 +78,12 @@ End
 
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+Class TGame
+	
+	Method LoadTriggers:Void() Abstract
+	Method NewGame:Void() Abstract
+End
 
 Class TScreen
 	Method OnInit:Int()
