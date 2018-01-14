@@ -278,7 +278,8 @@ Class GMessageTicker
 	
 	Function Draw:Void()
 		If curMsg <> "" Then
-			GWindowDrawer.Draw(80 - (curMsg.Length * 3) - 4, -4, (curMsg.Length * 6) + 8, 16)
+			'GWindowDrawer.Draw(80 - (curMsg.Length * 3) - 4, -4, (curMsg.Length * 6) + 8, 16)
+			GWindowDrawer.Draw(-4, -4, 164, 16)
 			GDrawTextPreserveBlend(curMsg, 80 - (curMsg.Length * 3), 0)
 		End
 	End

@@ -1,7 +1,7 @@
 #Rem
 	Conversation Screen
 	
-	n/a
+	When this screen ends, it will go back to the last screen. Which means you need to switch to the next screen BEFORE doing a cutscene!
 	
 	Verbs:
 		n/a

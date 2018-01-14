@@ -15,7 +15,7 @@ Import engine
 '''''''''''''''''''''''''''''''''''
 
 Function GetMonsterType_Basic:DMonster(level:Int)
-	Local randomNumber:Int = Rnd(100)
+	Local randomNumber:Int = Rnd(100) + Level
 	
 	NLog "Getting Monster of Level " + level
 	If randomNumber = 6 Then Return New FrogShambler(level)
@@ -30,7 +30,9 @@ Function GetMonsterType_Basic:DMonster(level:Int)
 	End
 End
 
-'''''''''''''''''''''''''''''''''''
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 Class FrogBug Extends DMonster
 	Method New(level:Int); InitLevel(level); End
@@ -61,20 +63,68 @@ Class FrogBug Extends DMonster
 	End
 End
 
+Class FrogSpider Extends DMonster
+	Method New(level:Int); InitLevel(level); End
+	Method InitLevel:Void(lvl = 1, nme:String = "")
+		img = imageMap.Get("monsters")
+		frame = 1
+		
+		Strength = 2
+		Endurance = 3
+		Knowledge = 3
+		Luck = 1
+		LevelToLevel(lvl)
+		UpdateBuffs()
+		
+		HP = maxHP
+		Name = "SPIDR"
+		AddSkill("posion")
+		AddSkill("posion")
+		AddWeakness("ice")
+		AddWeakness("aero")
+		
+		Level = lvl
+		XPNextLevel = 0
+	End
+End
+
+Class FrogSlime Extends DMonster
+	Method New(level:Int); InitLevel(level); End
+	Method InitLevel:Void(lvl = 1, nme:String = "")
+		img = imageMap.Get("monsters")
+		frame = 3
+		
+		Strength = 1
+		Endurance = 1
+		Knowledge = 1
+		Luck = 1
+		LevelToLevel(lvl)
+		UpdateBuffs()
+		
+		HP = maxHP
+		Name = "SLIME"
+		AddWeakness("ice")
+		AddWeakness("aero")
+		
+		Level = lvl
+		XPNextLevel = 0
+	End
+End
+
 Class FrogFly Extends DMonster
 	Method New(level:Int); InitLevel(level); End
 	Method InitLevel:Void(lvl = 1, nme:String = "")
 		img = imageMap.Get("monsters")
 		frame = 0
 		
-'		If lvl > 4 Then
-'			lvl = 3 + ( (lvl - 3) / 2)
-'		End
+		'		If lvl > 4 Then
+		'			lvl = 3 + ( (lvl - 3) / 2)
+		'		End
 		
-	'	Strength = lvl
-	'	Endurance = lvl / 2
-	'	Knowledge = lvl / 2
-	'	Luck = lvl + 2
+		'	Strength = lvl
+		'	Endurance = lvl / 2
+		'	Knowledge = lvl / 2
+		'	Luck = lvl + 2
 		Strength = 1
 		Endurance = 1
 		Knowledge = 1
@@ -168,7 +218,7 @@ Class FrogShambler Extends DMonster
 		Strength = 1
 		Endurance = 2
 		Knowledge = 3
-		Luck = 2
+		Luck = 20
 		LevelToLevel(lvl)
 		UpdateBuffs()
 		
@@ -188,6 +238,73 @@ Class FrogShambler Extends DMonster
 		AddWeakness("attack", -1)
 		
 		Level = lvl
+		XPNextLevel = 0
+	End
+End
+
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+' Bosses
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+
+Class BossGolem Extends DMonster
+	Method New(level:Int); InitLevel(level); End
+	Method InitLevel:Void(lvl = 1, nme:String = "")
+		img = imageMap.Get("monsters")
+		frame = 5
+		
+		Strength = 4
+		Endurance = 9
+		Knowledge = 1
+		Luck = 1
+		LevelToLevel(lvl)
+		UpdateBuffs()
+		
+		HP = maxHP
+		Name = "GOLEM"'nme
+		
+		AddSkill("focus")
+		AddSkill("terror")
+		AddSkill("rock")
+		AddWeakness("fire", -1)
+		AddWeakness("aero", -1)
+		AddWeakness("attack", -1)
+		
+		Level = lvl
+		XPNextLevel = 0
+	End
+End
+
+Class BossBahamaut Extends DMonster
+	Method New(level:Int); InitLevel(level); End
+	Method InitLevel:Void(lvl = 1, nme:String = "")
+		img = imageMap.Get("monsters")
+		frame = 2
+		'		If lvl > 8 Then
+		'			lvl = 7 + ( (lvl - 7) / 2)
+		'		End
+		
+		'	Strength = lvl + 3
+		'	Endurance = lvl
+		'	Knowledge = lvl / 2
+		'	Luck = lvl + 3
+		Strength = 2
+		Endurance = 8
+		Knowledge = 4
+		Luck = 15
+		LevelToLevel(lvl)
+		UpdateBuffs()
+		
+		HP = maxHP
+		Name = "BAHAMAUT"
+		AddSkill("fire")
+		AddSkill("fire")
+		AddSkill("fire")
+		AddSkill("boost")
+		AddSkill("aero")
+		AddWeakness("aero", -1)
+		
+		'	Level = lvl
 		XPNextLevel = 0
 	End
 End

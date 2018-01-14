@@ -31,7 +31,7 @@
 			"His name is GALGULON, he",
 			"is my brother but no long",
 			"for he has used dark magik",
-			"on innocents beings!"
+			"on innocents beings!!!"
 		],
 		["player_talk",
 			"I have tried to ignore him",
@@ -66,9 +66,9 @@
 		],
 		["animation_change",	"elder","0"],
 		["option_select",		"What say you?",
+			"I will go!`right",
 			"What?`wrong",
-			"hmm...`right",
-			"I will go!`right"
+			"hmm...`right"
 		]
 	],
 	"wrong":[

@@ -18,7 +18,9 @@ Import input
 Import lang
 'Import saveandload
 
-Global vScnWidth:Float = 160.0, vScnHeight:Float = 144.0
+''' TODO: Move ALL of this into NinjaQuest which extends T_Game.
+
+Global vScnWidth:Float = 160.0, vScnHeight:Float = 144.0 ''' Virtual screen size.
 
 Global currentScreen:TScreen, lastScreen:TScreen
 	Global combatScreen:TScreen = Null
@@ -80,7 +82,6 @@ End
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 Class TGame
-	
 	Method LoadTriggers:Void() Abstract
 	Method NewGame:Void() Abstract
 End

@@ -303,6 +303,7 @@ Class DCharacter Extends TAttributes
 	
 	Method LevelUp:Void(mute:Bool = False)
 		Local lvl:Int = Level + 1
+		Local oldHP:Int = maxHP
 		
 		If Not mute Then GMessageTicker.Add(Name + " has leveled up!")
 		
@@ -314,11 +315,15 @@ Class DCharacter Extends TAttributes
 		End
 		
 		CalculateBuffs()
-		HP = maxHP
+		HP += maxHP - oldHP
 		
 		Level = lvl
 		If XP < XPNextLevel Then XP += XPNextLevel
-		XPNextLevel = (lvl * 25) + (Strength * 5 + Endurance * 3 + Knowledge * 10 + Luck)
+		XPNextLevel = (lvl * lvl) + (Strength * 2 + Endurance * 3 + Knowledge * 4 + Luck)
+		Print Self.Name + "] XP Next Level (before Log): " + XPNextLevel
+		Print lvl + " -> " + Log(XPNextLevel)
+		XPNextLevel = Log(XPNextLevel) * 20 ' 100
+		Print Self.Name + "] XP Next Level: " + XPNextLevel
 		LvlUp = True
 	End
 	

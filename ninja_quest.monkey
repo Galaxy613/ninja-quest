@@ -21,7 +21,7 @@ Class NinjaQuest Extends TGame
 		ninja.InitStats(-1, 5, 3)
 		ninja.InitLevel(4, "NINJA")
 		ninja.img = imageMap.Get("ninja")
-		'ninja.Skills.Add("aero", "")
+		ninja.Skills.Add("aero", "")
 		'ninja.Skills.Add("slash", "")
 		ninja.Skills.Add("smoke", "")
 		playerCharacters.AddLast(ninja)

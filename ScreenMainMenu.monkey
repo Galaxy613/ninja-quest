@@ -127,7 +127,7 @@ Class SMainMenu Extends TScreen
 		
 		UpDownMenu(3)
 		
-		If NInput.IsHit(N_A)
+		If NInput.IsHit(N_A) or NInput.IsHit(N_Start)
 			Select menuIndex
 				Case 0
 					modes.current = modes.newgame
@@ -178,7 +178,7 @@ Class SMainMenu Extends TScreen
 	Method _Draw:Void()
 		GDrawTextPreserveBlend("Made by Karl Nyborg", 0, 144 - 16)
 		GDrawTextPreserveBlend("Battle Art by Yokomeshi", 0, 144 - 24)
-		GDrawTextPreserveBlend("2013-16 - Alpha v6", 0, 144 - 8)
+		GDrawTextPreserveBlend("2013-16 - Alpha v0.7", 0, 144 - 8)
 	End
 	
 	''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''

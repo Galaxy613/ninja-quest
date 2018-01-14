@@ -101,8 +101,8 @@ Class SCombat Extends TScreen
 				modeSkillDraw
 			Case modes.enemy
 				modeEnemyDraw
-			Case modes.fight
-				modefightDraw
+		'	Case modes.fight
+		'		modefightDraw
 			Case modes.selectEnemyFight
 				modeselectEnemyFightDraw
 			Case modes.selectEnemy
@@ -115,11 +115,25 @@ Class SCombat Extends TScreen
 				modeRunDraw
 			Default
 				GWindowDrawer.Draw(0, 106, 160, 38 + 4)
+		
+				DrawBasicStats()
 		End
 		
 		GEffect.DrawAll()
 		GMessageTicker.Draw()
 		DrawText(modes.current, 0, 0)
+	End
+	
+	Method DrawBasicStats:Void()
+		'' Just to fill space.
+		Local i = 0
+		For Local char:DCharacter = EachIn playerCharacters
+			'GDrawTextPreserveBlend(char.Name + " LVL:" + char.Level + " " + char.HP + "/" + char.maxHP + "HP", 6, 106 + 4 + (i * 8))
+			GDrawTextPreserveBlend(char.Name, 6, 106 + 4 + (i * 8))
+			GDrawTextPreserveBlend("LVL:" + char.Level, 6 + (7 * 8), 106 + 4 + (i * 8))
+			GDrawTextPreserveBlend(char.HP + "/" + char.maxHP + "HP", 6 + (12 * 8), 106 + 4 + (i * 8))
+			i += 1
+		Next
 	End
 	
 	Method DrawBattle:Void()
@@ -573,9 +587,11 @@ Class SCombat Extends TScreen
 	
 	'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	''''''''''''''' MODE FIGHT
-	Method modefightDraw:Void()
-		GWindowDrawer.Draw(0, 106, 160, 38 + 4)
-	End
+'	Method modefightDraw:Void()
+'		GWindowDrawer.Draw(0, 106, 160, 38 + 4)
+'		
+'		DrawBasicStats()
+'	End
 	
 	Method modefightUpdate:Void()
 		If enemyList.Count() = 0 Then GoToWin(); Return
@@ -605,9 +621,11 @@ Class SCombat Extends TScreen
 	
 	'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 	''''''''''''''' MODE NEXT TURN
-	Method modeNTDraw:Void()
-		GWindowDrawer.Draw(0, 106, 160, 38 + 4)
-	End
+'	Method modeNTDraw:Void()
+'		GWindowDrawer.Draw(0, 106, 160, 38 + 4)
+'		
+'		DrawBasicStats()
+'	End
 	
 	Method modeNTUpdate:Void()
 		NLog "modeNTUpdate:startCharTurn" + currentCharTurn
@@ -732,6 +750,8 @@ Class SCombat Extends TScreen
 	Method modeEnemyDraw:Void()
 		GWindowDrawer.Draw(0, 106, 160, 38 + 4)
 		If curCharData Then GDrawTextPreserveBlend("->", curCharData.x - 12, curCharData.y + 8)
+		
+		DrawBasicStats()
 	End
 	
 	Method modeEnemyUpdate:Void()
@@ -824,9 +844,11 @@ Class SCombat Extends TScreen
 	''''''''''''''' MODE WIN
 	Method GoToWin:Void()
 		For Local pc:DCharacter = EachIn playerCharacters
+			pc.LvlUp = False ''' Does this need to be here?
 			If pc.HP > 0 Then
-				pc.LvlUp = False ''' Does this need to be here?
 				pc.AddXP(xpGained)
+			Else
+				pc.AddXP(xpGained * 2)
 			End
 		Next
 		playerGold += goldGained
@@ -902,6 +924,8 @@ Class SCombat Extends TScreen
 			If ply.HP < 1 Then ply.HP = 1
 		Next
 		
+		'' Update GAME TRIGGERS
+		' TODO: Abstract this to combat.monkey
 		If gameTriggers.Get("m" + ConvertToSpecialID(2)) = "1" Then ''' DANGER FOREST
 			gameTriggers.Set("m" + ConvertToSpecialID(2), "2")
 				
@@ -910,7 +934,7 @@ Class SCombat Extends TScreen
 				archer = New DCharacter()
 				archer.accessory = DItem.Generate(DItem.TYPE_EQUIP, 4)
 				archer.InitStats(4, 5, 3)
-				archer.InitLevel(ninja.Level / 2, "ARCHER")
+				archer.InitLevel(5, "ARCHER")
 				archer.img = imageMap.Get("archer")
 				archer.Skills.Add("cure", "")
 				'		archer.Skills.Add("poison", "")
@@ -922,6 +946,26 @@ Class SCombat Extends TScreen
 		If gameTriggers.Get("m" + ConvertToSpecialID(10)) = "1" Then ''' THE PIT
 			gameTriggers.Set("m" + ConvertToSpecialID(10), "2")
 		End
+		
+		If gameTriggers.Get("m" + ConvertToSpecialID(3)) = "1" Then ''' CRAZY MINES
+			gameTriggers.Set("m" + ConvertToSpecialID(3), "2")
+		EndIf
+		
+		If gameTriggers.Get("m" + ConvertToSpecialID(5)) = "1" Then ''' WINDY PLAINS
+			gameTriggers.Set("m" + ConvertToSpecialID(5), "2")
+		EndIf
+		
+		If gameTriggers.Get("m" + ConvertToSpecialID(6)) = "1" Then ''' SMELLY MARCHES
+			gameTriggers.Set("m" + ConvertToSpecialID(6), "2")
+		EndIf
+		
+		If gameTriggers.Get("m" + ConvertToSpecialID(8)) = "1" Then ''' MT.KRUGDOR
+			gameTriggers.Set("m" + ConvertToSpecialID(8), "2")
+		EndIf
+		
+		If gameTriggers.Get("m" + ConvertToSpecialID(9)) = "1" Then ''' THE TOWER
+			gameTriggers.Set("m" + ConvertToSpecialID(9), "2")
+		EndIf
 		
 		ClearActiveEvents
 	End

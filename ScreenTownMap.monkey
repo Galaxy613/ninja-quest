@@ -290,7 +290,7 @@ Class SMap Extends TScreen
 		Local moved:Bool = False
 		
 		If NInput.IsDown(N_B) Then '' Cheat to walk everywhere - Too Easy to use - Make sure you remove this later.
-			x += NInput.GetXAxis()
+			x += NInput.GetXAxis() ' TODO: Remove
 			y += NInput.GetYAxis()
 		Else
 			''' IF the player isn't cheating, check the movement correctly.
@@ -445,7 +445,6 @@ Class SMap Extends TScreen
 					SwitchScreenTo combatScreen
 					Local cmtScn:SCombat = SCombat(combatScreen)
 					cmtScn.enemyList.AddLast(New CharArcher(10))
-					'cmtScn.enemyList.First().Name = "BAHAMAUT"
 					cmtScn.placeMonsters()
 					gameTriggers.Set("m" + specialID, "1")
 				End
@@ -558,11 +557,7 @@ Class SMap Extends TScreen
 					SwitchScreenTo combatScreen
 					Local cmtScn:SCombat = SCombat(combatScreen)
 					'cmtScn.Clear
-					cmtScn.enemyList.AddLast(New FrogWasp(25))
-					cmtScn.enemyList.First().Name = "BAHAMAUT"
-					cmtScn.enemyList.First().AddSkill("fire")
-					cmtScn.enemyList.First().AddSkill("fire")
-					cmtScn.enemyList.First().AddSkill("fire")
+					cmtScn.enemyList.AddLast(New BossBahamaut(25))
 					cmtScn.placeMonsters()
 					gameTriggers.Set("m" + specialID, "1")
 				End

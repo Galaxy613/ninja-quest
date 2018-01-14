@@ -32,6 +32,7 @@ Story Names:
 -- Post-combat fight conv. will be how through the fight he has come to understand there is still good in the world to fight for and how he'll gladly join you guys!
 
 @ Leaving WALL CITY:
+There needs to be a door that says "This door needs a key." There is no key though.
 
 @ Meeting WARRIOR:
 -- His meeting will be super long, you have to defeat his Sensei before you 'battle' him, his sensei is level 1 and only has 1 hp.
