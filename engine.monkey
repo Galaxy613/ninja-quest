@@ -39,11 +39,13 @@ Global warrior:DCharacter
 Global playerCharacters:List<DCharacter> = New List<DCharacter>()
 Global playerItems:List<DItem> = New List<DItem>()
 
-Global playerGold:Int = 0, currentLocation:Int = 0, lastTown:Int = 128
+Global playerGold:Int = 0
+Global currentLocation:Int = 0, lastTown:Int = 128
 Global gameTriggers:StringMap<String> = New StringMap<String>()
 
 Global hasGoneNuclear:Bool = False, nukeMessage:String = ""
 
+''' Resets the current game state for a new player.
 Function Reset:Void()
 	playerGold = 0
 	currentLocation = 0
@@ -55,22 +57,22 @@ End
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
-Function SwitchScreenTo:Void(newScn:TScreen, autoInit:Bool = True)
 ''' Switches to next screen while also keeping track of last screen and allowing for init to be called.
+Function SwitchScreenTo:Void(newScn:TScreen, autoInit:Bool = True)
 	lastScreen = currentScreen
 	currentScreen = newScn
 	If autoInit Then currentScreen.OnInit()
 End
 
-Function GoNuclear:Void(msg:String)
 ''' Creates a fatal error, requires the main loop to check 'hasGoneNuclear'
+Function GoNuclear:Void(msg:String)
 	hasGoneNuclear = True
 	nukeMessage = msg
 	Print "[FATAL ERROR] " + nukeMessage
 End
 
-Function NLog:Void(msg:String, pri:Int = 0)
 ''' N stands for Ninja. This is just an improved console outputter to allow for more context.
+Function NLog:Void(msg:String, pri:Int = 0)
 	If pri = 0 Then
 		Print "[NQ] " + msg
 	ElseIf pri = 1 Then
@@ -84,6 +86,14 @@ End
 Class TGame
 	Method LoadTriggers:Void() Abstract
 	Method NewGame:Void() Abstract
+	
+	Method Town_Name:String(townID:Int) Abstract
+	
+	''' Town Methods. Returns op code, or zero if nothing special should be done.
+	Method Town_Enter:Int(townId:Int) Abstract
+	Method Town_Inn:Int(townId:Int) Abstract
+	Method Town_Shop:Int(townId:Int) Abstract
+	Method Town_Talk:Int(townId:Int) Abstract
 End
 
 Class TScreen
@@ -139,6 +149,10 @@ Class DBoundingBox Extends GRect
 	Field name:String
 End
 
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+''' Game Trigger Functions
+
+''' Currently not used
 Function CheckEvent:Void(eN:String, data:String)
 	Select eN.ToLower()
 		Case "m129"
@@ -164,4 +178,8 @@ End
 ''' Convert 1 to 128
 Function ConvertToSpecialID:Int(ID:Int, type:Int = 0)
 	Return (ID + 128 - 1 + (type * 16))
+End
+
+Function GetTownId:int(locationId:Int)
+	Return locationId - 128 + 1
 End

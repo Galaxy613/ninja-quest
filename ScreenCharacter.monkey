@@ -472,21 +472,21 @@ Class SCharacter Extends TScreen '' Inventory Screen
 				If char.accessory <> Null Then
 					GDrawTextPreserveBlend("Equip: " + char.accessory.Name, 6, 6 + 8 * 8)
 				
-					Local i:Int = 9
+					Local j:Int = 9
 					For Local tmpBuff:DBuff = EachIn char.accessory.Buffs
-						GDrawTextPreserveBlend(tmpBuff.type.ToUpper() + ": " + tmpBuff.amt, 6, 6 + 8 * i)
-						i += 1
+						GDrawTextPreserveBlend(tmpBuff.type.ToUpper() + ": " + tmpBuff.amt, 6, 6 + 8 * j)
+						j += 1
 					Next
-					i += 1
+					j += 1
 					
 					For Local weakness:String = EachIn char.accessory.Weaknesses.Keys()
 						Local weaknessAmt:int = Int(char.accessory.Weaknesses.Get(weakness))
 						If weaknessAmt > 0 Then
-							GDrawTextPreserveBlend("WEAK to" + weakness.ToUpper(), 6, 6 + 8 * i)
+							GDrawTextPreserveBlend("WEAK to" + weakness.ToUpper(), 6, 6 + 8 * j)
 						ElseIf weaknessAmt < 0
-							GDrawTextPreserveBlend("STRONG to" + weakness.ToUpper(), 6, 6 + 8 * i)
+							GDrawTextPreserveBlend("STRONG to" + weakness.ToUpper(), 6, 6 + 8 * j)
 						End
-						i += 1
+						j += 1
 					Next
 				Else
 					GDrawTextPreserveBlend("Equip: n/a", 6, 6 + 8 * 8)
