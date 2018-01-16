@@ -79,7 +79,7 @@ Function LoadGame:Void(file:JSONObject)
 	If file.Contains("current_map") Then
 		tmp = JSONObject(file.GetItem("current_map"))
 		'tmp.GetItem("name", "")
-		SMap(townMapScreen).StartAt(tmp.GetItem("x", 18), tmp.GetItem("y", 39)) ''' Default Location
+		SMap(townMapScreen).PlacePlayerAt(tmp.GetItem("x", 18), tmp.GetItem("y", 39)) ''' Default Location
 	End
 End
 

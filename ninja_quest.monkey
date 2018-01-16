@@ -38,7 +38,7 @@ Class NinjaQuest Extends TGame
 		SwitchScreenTo(townMapScreen)
 		townMapScreen.OnInit()
 		lastTown = 128
-		SMap(townMapScreen).StartAt(lastTown)
+		SMap(townMapScreen).PlacePlayerAt(lastTown)
 				
 		SConversation(chatScreen).RunCutscene("boring_exposition")
 		SwitchScreenTo(chatScreen)

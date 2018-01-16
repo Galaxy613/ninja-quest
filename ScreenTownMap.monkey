@@ -48,11 +48,11 @@ Class SMap Extends TScreen
 		menuColumn = 0
 		menuIndex = 0
 		
-		tilemap = imageMap.Get("tilemap")
-		charmap = imageMap.Get("charmap")
+		tilemap = imageMap.Get(tileMapName)
+		charmap = imageMap.Get(charMapName)
 		GMessageTicker.Set("")
 		
-		map = DMap.FindMap("worldmap")'"ninja_village_full")
+		map = DMap.FindMap(mapName)
 		
 		nextBattle = Int(Rnd(3, 10))
 		
@@ -61,7 +61,7 @@ Class SMap Extends TScreen
 		Return 0
 	End
 	
-	Method StartAt:Void(id:Int = 128)
+	Method PlacePlayerAt:Void(id:Int = 128)
 		If Not map Then Return
 		If map.SearchMap(map.currentSpecial, id) Then
 			x = map.tmpX
@@ -70,10 +70,10 @@ Class SMap Extends TScreen
 		End
 	End
 	
-	Method StartAt:Void(xx:Int, yy:Int)
+	Method PlacePlayerAt:Void(xx:Int, yy:Int)
 		x = xx
 		y = yy
-		Print("Starting player at [" + x + "," + y + "]")
+		Print("Placing player at [" + x + "," + y + "]")
 	End
 	
 	Method OnUpdate:Int()
