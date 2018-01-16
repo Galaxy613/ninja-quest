@@ -17,17 +17,31 @@ Import engine
 Import combat
 Import ScreenConversation
 
+''' Map Screen
 Class SMap Extends TScreen
-	Global tilemap:Image = Null
-	Global charmap:Image = Null
 	
-'	Field currentMap:Int[][]
-'	Field currentSpecial:Int[][]
-'	Field monsterZones:List<MonsterZone> = New List<MonsterZone>()
+	Field tilemap:Image = Null
+	Field charmap:Image = Null
+	Field tileMapName:String = ""
+	Field charMapName:String = ""
+	
 	Field map:DMap
+	Field mapName:String = ""
 	
 	Field x:Int = 4, y:Int = 4, tx:Int, ty:Int, dir:Int = 0
 	Field nextBattle:Int = 1
+	
+	Method New(mapN:String)
+		tileMapName = "tilemap"
+		charMapName = "charmap"
+		mapName = mapN
+	End
+	
+	Method New(mapN:String, tileMapN:String, charMapN:String)
+		tileMapName = tileMapN
+		charMapName = charMapN
+		mapName = mapN
+	End
 	
 	Method OnInit:Int()
 		modes.current = modes.map
@@ -387,14 +401,6 @@ Class SMap Extends TScreen
 		NLog "GetCurrentZoneName :: Failed"
 		Return ""
 	End
-	
-'	Method CheckTileEffect:Bool(specialID:Int, inFront:Bool = False)
-'		''' Finds the function that manage's the map's trigger effects.
-'	'	If map.name.Contains("ninja")
-'	'		Return _CheckNinjaVillage(specialID)
-'	'	End
-'		Return _CheckVillage(specialID, inFront)
-'	End
 	
 	Method CheckTileEffect:Bool(specialID:Int) ' formerly _CheckVillage
 		If not gameTriggers.Contains("m" + specialID)

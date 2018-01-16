@@ -63,12 +63,10 @@ Class MainClass Extends App
 		characterScreen = New SCharacter()
 		townMapScreen = New SMap()
 		chatScreen = New SConversation()
-		
-		SwitchScreenTo titleScreen'townScreen'characterScreen'combatScreen
-		
+				
 		Seed = Millisecs()
 		
-		currentScreen.OnInit()
+		game.OnCreate
 		
 		Return 0
 	End

@@ -2,6 +2,14 @@ Import engine
 '' gameTriggers
 
 Class NinjaQuest Extends TGame
+
+	Method New()
+		worldMapName = "worldmap"
+	End
+	
+	Method OnCreate:Void()
+		SwitchScreenTo titleScreen'townScreen'characterScreen'combatScreen
+	End
 	
 	Method LoadTriggers:Void()
 		'' Save ninja-quest game specific variable here. Lets not hard code EVERYTHING...
@@ -11,8 +19,6 @@ Class NinjaQuest Extends TGame
 		Else
 			gameTriggers.Add("game", "ninja quest")
 		EndIf
-	
-	
 	End
 
 	Method NewGame:Void()

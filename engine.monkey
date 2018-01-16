@@ -84,7 +84,10 @@ End
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 Class TGame
-	Method LoadTriggers:Void() Abstract
+	Field worldMapName:String = ""
+
+	Method OnCreate:Void() Abstract
+	Method LoadTriggers:Void() Abstract '' TODO: Decide whether to use this - currently not used.
 	Method NewGame:Void() Abstract
 	
 	Method Town_Name:String(townID:Int) Abstract
