@@ -230,7 +230,15 @@ Class NinjaQuest Extends TGame
 				GMessageTicker.Add "Party HP restored!"
 			'Case 2' "DANGER FOREST"
 			'Case 3' "CRAZY MINES"
-			'Case 4' "WALL CITY"
+			Case 4' "WALL CITY"
+				If playerGold >= 10 Then
+					playerGold -= 10
+					For Local ply:DCharacter = EachIn playerCharacters
+						ply.HP = ply.maxHP
+					Next
+					GMessageTicker.Add "Party HP restored!"
+				EndIf
+				GMessageTicker.Add "The INN cost 10 gold."
 			'Case 5' "WINDY PLAINS"
 			'Case 6' "SMELLY MARCHES"
 			'Case 7' "MOUNTAINGRAD"
@@ -278,4 +286,91 @@ Class NinjaQuest Extends TGame
 		End
 	End
 	
+	''' Combat Methods
+	Method Combat_Random:List<DMonster>(zone:String)
+		Local monsters:List<DMonster> = New List<DMonster>()
+		
+		NLog "zone: " + zone
+		Select zone.ToLower()
+			Case "monsters_forest_1"
+				Select Int(Rnd(7))
+					Case 1
+						monsters.AddLast(New FrogBug(1))
+						monsters.AddLast(New FrogBug(1))
+					Case 2
+						monsters.AddLast(New FrogFly(1))
+						monsters.AddLast(New FrogBug(1))
+					Case 4
+						monsters.AddLast(New FrogBug(3))
+					Default
+						monsters.AddLast(New FrogFly(1))
+				End
+			Case "monsters_plain_1"
+				Select Int(Rnd(7))
+					Case 1
+						monsters.AddLast(New FrogBug(1))
+						monsters.AddLast(New FrogBug(1))
+					Case 2
+						monsters.AddLast(New FrogFly(1))
+						monsters.AddLast(New FrogBug(1))
+						monsters.AddLast(New FrogFly(1))
+					Case 4
+						monsters.AddLast(New FrogBug(2))
+					Default
+						monsters.AddLast(New FrogFly(1))
+						monsters.AddLast(New FrogFly(1))
+				End
+			Case "monsters_forest_2"
+				Select Int(Rnd(7))
+					Case 1
+						monsters.AddLast(New FrogBug(2))
+						monsters.AddLast(New FrogBug(2))
+						monsters.AddLast(New FrogBug(2))
+					Case 2
+						monsters.AddLast(New FrogFly(4))
+						monsters.AddLast(New FrogBug(3))
+					Case 4
+						monsters.AddLast(New FrogSpider(7))
+					Default
+						monsters.AddLast(New FrogFly(5))
+				End
+			Case "monsters_plain_2"
+				Select Int(Rnd(7))
+					Case 1
+						monsters.AddLast(New FrogSlime(5))
+						monsters.AddLast(New FrogSlime(5))
+					Case 2
+						monsters.AddLast(New FrogSkeleton(6))
+						monsters.AddLast(New FrogSkeletonArcher(6))
+						monsters.AddLast(New FrogSkeleton(6))
+					Case 4
+						monsters.AddLast(New FrogCROW(10))
+					Default
+						monsters.AddLast(New FrogCROW(7))
+						monsters.AddLast(New FrogCROW(7))
+				End
+			Case "monsters_marsh_1"
+				Select Int(Rnd(7))
+					Case 1
+						monsters.AddLast(New FrogSlime(5))
+						monsters.AddLast(New FrogSlime(5))
+						monsters.AddLast(New FrogSlime(5))
+						monsters.AddLast(New FrogSlime(5))
+					Case 2
+						monsters.AddLast(New FrogSkeleton(8))
+						monsters.AddLast(New FrogSkeletonArcher(10))
+						monsters.AddLast(New FrogSkeleton(8))
+					Default
+						monsters.AddLast(New FrogSlime(5))
+						monsters.AddLast(New FrogEngima(10))
+						monsters.AddLast(New FrogSlime(5))
+				End
+			Case "safe"
+				'' and sound
+			Default
+				monsters.AddLast(New FrogShambler(ninja.Level * Int(Rnd(3, 5))))
+		End
+		
+		Return monsters
+	End
 End

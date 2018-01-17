@@ -11,112 +11,14 @@ Strict
 Import engine
 Import ScreenCombat
 
+#Rem
+	Set up a random battle based on a zone.
+#END
 Function RandomBattle:Void(zone:String)
 	SwitchScreenTo combatScreen
 	Local cmtScn:SCombat = SCombat(combatScreen)
 	
-	NLog "zone: " + zone
-	Select zone.ToLower()
-		Case "monsters_forest_1"
-			Select Int(Rnd(7))
-				Case 1
-					cmtScn.enemyList.AddLast(New FrogBug(1))
-					cmtScn.enemyList.AddLast(New FrogBug(1))
-				Case 2
-					cmtScn.enemyList.AddLast(New FrogFly(1))
-					cmtScn.enemyList.AddLast(New FrogBug(1))
-				Case 4
-					cmtScn.enemyList.AddLast(New FrogBug(1))
-				Default
-					cmtScn.enemyList.AddLast(New FrogFly(1))
-			End
-		Case "monsters_plain_1"
-			Select Int(Rnd(7))
-				Case 1
-					cmtScn.enemyList.AddLast(New FrogBug(1))
-					cmtScn.enemyList.AddLast(New FrogBug(1))
-				Case 2
-					cmtScn.enemyList.AddLast(New FrogFly(1))
-					cmtScn.enemyList.AddLast(New FrogBug(1))
-					cmtScn.enemyList.AddLast(New FrogFly(1))
-				Case 4
-					cmtScn.enemyList.AddLast(New FrogBug(2))
-				Default
-					cmtScn.enemyList.AddLast(New FrogFly(1))
-					cmtScn.enemyList.AddLast(New FrogFly(1))
-			End
-		Case "monsters_forest_2"
-			Select Int(Rnd(7))
-				Case 1
-					cmtScn.enemyList.AddLast(New FrogBug(2))
-					cmtScn.enemyList.AddLast(New FrogBug(2))
-				Case 2
-					cmtScn.enemyList.AddLast(New FrogFly(3))
-					cmtScn.enemyList.AddLast(New FrogBug(3))
-				Case 4
-					cmtScn.enemyList.AddLast(New FrogBug(5))
-				Default
-					cmtScn.enemyList.AddLast(New FrogFly(4))
-			End
-		Case "monsters_0"
-			Select Int(Rnd(7))
-				Case 1
-					cmtScn.enemyList.AddLast(New FrogBug(1))
-					cmtScn.enemyList.AddLast(New FrogBug(1))
-				Case 2
-					cmtScn.enemyList.AddLast(New FrogFly(1))
-					cmtScn.enemyList.AddLast(New FrogBug(1))
-				Case 4
-					cmtScn.enemyList.AddLast(New FrogBug(1))
-				Default
-					cmtScn.enemyList.AddLast(New FrogFly(1))
-			End
-		Case "monsters_1"
-			Select Int(Rnd(7))
-				Case 1
-					cmtScn.enemyList.AddLast(New FrogFly(1))
-					cmtScn.enemyList.AddLast(New FrogWasp(4))
-					cmtScn.enemyList.AddLast(New FrogFly(1))
-				Case 2
-					cmtScn.enemyList.AddLast(New FrogFly(1))
-					cmtScn.enemyList.AddLast(New FrogBug(1))
-					cmtScn.enemyList.AddLast(New FrogFly(1))
-				Case 3
-					cmtScn.enemyList.AddLast(New FrogCockroach(1))
-					cmtScn.enemyList.AddLast(New FrogCockroach(1))
-				Case 4
-					cmtScn.enemyList.AddLast(New FrogBug(1))
-					cmtScn.enemyList.AddLast(New FrogBug(1))
-				Default
-					cmtScn.enemyList.AddLast(New FrogBug(2))
-			End
-		Case "monsters_2"
-			Select Int(Rnd(8))
-				Case 1
-					cmtScn.enemyList.AddLast(New FrogFly(2))
-					cmtScn.enemyList.AddLast(New FrogWasp(10))
-					cmtScn.enemyList.AddLast(New FrogFly(2))
-				Case 2
-					cmtScn.enemyList.AddLast(New FrogBug(4))
-					cmtScn.enemyList.AddLast(New FrogBug(4))
-				Case 3
-					cmtScn.enemyList.AddLast(New FrogCockroach(3))
-					cmtScn.enemyList.AddLast(New FrogCockroach(3))
-				Case 4
-					cmtScn.enemyList.AddLast(New FrogBug(2))
-					cmtScn.enemyList.AddLast(New FrogBug(3))
-					cmtScn.enemyList.AddLast(New FrogBug(2))
-				Default
-					cmtScn.enemyList.AddLast(New FrogFly(2))
-					cmtScn.enemyList.AddLast(New FrogFly(4))
-					cmtScn.enemyList.AddLast(New FrogFly(4))
-					cmtScn.enemyList.AddLast(New FrogFly(2))
-			End
-		Case "safe"
-			'' and sound
-		Default
-			cmtScn.enemyList.AddLast(New FrogShambler(ninja.Level * Int(Rnd(1, 10))))
-	End
+	cmtScn.enemyList = game.Combat_Random(zone)
 	
 	GMessageTicker.Add(cmtScn.enemyList.Count() + " enemies approach!")
 	cmtScn.placeMonsters()

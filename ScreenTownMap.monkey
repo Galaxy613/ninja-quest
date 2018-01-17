@@ -22,11 +22,11 @@ Class SMap Extends TScreen
 	
 	Field tilemap:Image = Null
 	Field charmap:Image = Null
-	Field tileMapName:String = ""
-	Field charMapName:String = ""
+	Field tileMapName:String = "NOT SET"
+	Field charMapName:String = "NOT SET"
 	
 	Field map:DMap
-	Field mapName:String = ""
+	Field mapName:String = "NOT SET"
 	
 	Field x:Int = 4, y:Int = 4, tx:Int, ty:Int, dir:Int = 0
 	Field nextBattle:Int = 1
@@ -357,6 +357,9 @@ Class SMap Extends TScreen
 			GWindowDrawer.Draw(-4, 144 - 12, 168, 16)
 			'GDrawTextPreserveBlend(map.currentSpecial[y][x] + " " + WorldMap_Names(), 1, 144 - 9)
 			GDrawTextPreserveBlend(WorldMap_Names(), 1, 144 - 9)
+		ElseIf KeyDown(KEY_P)
+			GWindowDrawer.Draw(-4, 144 - 12, 168, 16)
+			GDrawTextPreserveBlend(GetCurrentZoneName(""), 1, 144 - 9)
 		End
 	End
 	
@@ -390,15 +393,15 @@ Class SMap Extends TScreen
 	Method GetCurrentZoneName:String(prefix:String = "_")
 		For Local r:DBoundingBox = EachIn map.monsterZones
 			If Not r.name.Contains(prefix) Then Continue
-			NLog r.x + "," + (r.x + r.w)+" ; "+ r.y + "," + (r.y + r.h)
+			'NLog r.x + "," + (r.x + r.w)+" ; "+ r.y + "," + (r.y + r.h)
 			If x * 16 > r.x And x * 16 < r.x + r.w Then
 				If y * 16 > r.y And y * 16 < r.y + r.h Then
-					NLog "r = " + r.name
+					'NLog "r = " + r.name
 					Return r.name
 				End
 			End
 		Next
-		NLog "GetCurrentZoneName :: Failed"
+		NLog "GetCurrentZoneName :: Failed: " + x + "," + y
 		Return ""
 	End
 	
@@ -494,6 +497,7 @@ Class DMap
 	End
 
 	Method LoadMap:Bool(mapFilename:String)
+		NLog "Loading Map: '" + mapFilename + "'"
 		If LoadString("maps/" + mapFilename + ".json") = "" Then GoNuclear "Can not find map file '" + mapFilename + ".json'!!!" 'Return False
 		Local file:JSONObject = JSONObject(JSONData.ReadJSON(LoadString("maps/" + mapFilename + ".json")))
 		Local width:Int = file.GetItem("width").ToInt()

@@ -88,6 +88,77 @@ Class FrogSpider Extends DMonster
 	End
 End
 
+Class FrogCROW Extends DMonster
+	Method New(level:Int); InitLevel(level); End
+	Method InitLevel:Void(lvl = 1, nme:String = "")
+		img = imageMap.Get("monsters")
+		frame = 8
+		
+		Strength = 1
+		Endurance = 8
+		Knowledge = 1
+		Luck = 1
+		LevelToLevel(lvl)
+		UpdateBuffs()
+		
+		HP = maxHP
+		Name = "CROH"
+		AddSkill("posion")
+		AddSkill("posion")
+		AddWeakness("attack", 1)
+		AddWeakness("aero")
+		
+		Level = lvl
+		XPNextLevel = 0
+	End
+End
+
+Class FrogSkeleton Extends DMonster
+	Method New(level:Int); InitLevel(level); End
+	Method InitLevel:Void(lvl = 1, nme:String = "")
+		img = imageMap.Get("monsters")
+		frame = 17
+		
+		Strength = 3
+		Endurance = 3
+		Knowledge = 0
+		Luck = 0
+		LevelToLevel(lvl)
+		UpdateBuffs()
+		
+		HP = maxHP
+		Name = "SKELE"
+		AddWeakness("aero")
+		AddWeakness("attack", 2)
+		
+		Level = lvl
+		XPNextLevel = 0
+	End
+End
+
+Class FrogSkeletonArcher Extends DMonster
+	Method New(level:Int); InitLevel(level); End
+	Method InitLevel:Void(lvl = 1, nme:String = "")
+		img = imageMap.Get("monsters")
+		frame = 16
+		
+		Strength = 2
+		Endurance = 3
+		Knowledge = 0
+		Luck = 5
+		LevelToLevel(lvl)
+		UpdateBuffs()
+		
+		HP = maxHP
+		Name = "SKARC"
+		AddWeakness("aero")
+		AddWeakness("attack", 2)
+		
+		Level = lvl
+		XPNextLevel = 0
+	End
+End
+
 Class FrogSlime Extends DMonster
 	Method New(level:Int); InitLevel(level); End
 	Method InitLevel:Void(lvl = 1, nme:String = "")
@@ -202,6 +273,41 @@ Class FrogCockroach Extends DMonster
 		AddWeakness("attack", -1)
 		AddWeakness("rock")
 		AddWeakness("fire")
+		
+		Level = lvl
+		XPNextLevel = 0
+	End
+End
+
+Class FrogEngima Extends DMonster
+	Method New(level:Int); InitLevel(level); End
+	Method InitLevel:Void(lvl = 1, nme:String = "")
+		img = imageMap.Get("monsters")
+		frame = 10
+		
+		Strength = 0
+		Endurance = 0
+		Knowledge = 0
+		Luck = 5
+		LevelToLevel(lvl)
+		UpdateBuffs()
+		
+		HP = maxHP + Rnd(-5, 5)
+		Name = "ENGM"'nme
+		
+		AddSkill("focus")
+		Select Rnd(0, 3)
+			Case 1
+				AddSkill("terror")
+				AddWeakness("fire", 1)
+			Case 2
+				AddSkill("fire")
+				AddWeakness("ice", 1)
+			Default
+				AddSkill("aero")
+				AddWeakness("rock", 1)
+		End
+		AddWeakness("attack", -1)
 		
 		Level = lvl
 		XPNextLevel = 0

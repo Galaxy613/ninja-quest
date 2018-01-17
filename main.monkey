@@ -61,7 +61,7 @@ Class MainClass Extends App
 		titleScreen = New SMainMenu()
 		combatScreen = New SCombat()
 		characterScreen = New SCharacter()
-		townMapScreen = New SMap()
+		townMapScreen = New SMap(game.worldMapName)
 		chatScreen = New SConversation()
 				
 		Seed = Millisecs()
@@ -106,8 +106,8 @@ Class MainClass Extends App
 			GDrawTextPreserveBlend("GW " + (160 * g_scale), 2, 56 + (8 * 2))
 			GDrawTextPreserveBlend("LW " + lWidth, 2, 56 + (8 * 3))
 			
-			GDrawTextPreserveBlend("NI " + ninja.Level, 2, 56 + (8 * 5))
-			GDrawTextPreserveBlend("AR " + archer.Level, 2, 56 + (8 * 6))
+			'GDrawTextPreserveBlend("NI " + ninja.Level, 2, 56 + (8 * 5))
+			'GDrawTextPreserveBlend("AR " + archer.Level, 2, 56 + (8 * 6))
 		End
 		
 		NInput.Draw()

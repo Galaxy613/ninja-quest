@@ -21,22 +21,22 @@ Class DItem Extends TAttributes
 	Function Generate:DItem(tt:Int = 0, id:Int = -1)
 		Local item:DItem = New DItem()
 		Select id
-			Case 1
+			Case ITEM_SCARF
 				item.Set("Ninja Scarf", id, 50)
 				item.AddBuff("attack", 1)
-			Case 2
+			Case ITEM_BOMBS
 				item.Set("Smoke Bombs", id, 150)
 				item.AddBuff("evasion", 25)
-			Case 3
+			Case ITEM_CAP
 				item.Set("Sage Cap", id, 100)
 				item.AddBuff("knowledge", 1)
-			Case 4
+			Case ITEM_CLOAK
 				item.Set("Shadow Cloak", id, 150)
 				item.AddBuff("evasion", 15)
 				item.AddBuff("luck", 1)
 				item.AddBuff("endurance", -1)
 				item.AddWeakness("fire", 1)
-			Case 5
+			Case ITEM_LONGSWORD
 				item.Set("Longsword", id, 175)
 				item.AddBuff("attack", 5)
 				item.AddBuff("luck", -1)

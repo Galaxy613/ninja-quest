@@ -84,7 +84,7 @@ End
 ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 Class TGame
-	Field worldMapName:String = ""
+	Field worldMapName:String = "NOT SET"
 
 	Method OnCreate:Void() Abstract
 	Method LoadTriggers:Void() Abstract '' TODO: Decide whether to use this - currently not used.
@@ -97,6 +97,9 @@ Class TGame
 	Method Town_Inn:Int(townId:Int) Abstract
 	Method Town_Shop:Int(townId:Int) Abstract
 	Method Town_Talk:Int(townId:Int) Abstract
+	
+	''' Combat Methods
+	Method Combat_Random:List<DMonster>(zone:String) Abstract ' Retrieve a random list of monsters for the zone.
 End
 
 Class TScreen
