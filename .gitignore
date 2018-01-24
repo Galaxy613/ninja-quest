@@ -1,3 +1,6 @@
 CombatProto.jungle.JILayout
 main.build**/
 CombatProto.jungle.JILayout
+*.JILayout
+*.jiproj
+*.JIPO
